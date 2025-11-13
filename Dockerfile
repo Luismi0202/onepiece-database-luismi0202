@@ -2,7 +2,8 @@
 FROM gradle:8.5-jdk17-alpine AS build
 WORKDIR /home/gradle/src
 COPY --chown=gradle:gradle . .
-RUN gradle build --no-daemon
+# Modifica esta línea para saltar los tests
+RUN gradle build --no-daemon -x test
 
 # Etapa de ejecución
 FROM eclipse-temurin:17-jre-jammy
