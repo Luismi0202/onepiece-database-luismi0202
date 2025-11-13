@@ -20,7 +20,7 @@ object PersonajeMapper {
             id = personajeDTO.id,
             nombre = personajeDTO.nombre,
             tripulacion = personajeDTO.tripulacion,
-            habilidades = emptyList()
+            habilidades = mutableListOf()
         )
     }
 }
