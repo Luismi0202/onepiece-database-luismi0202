@@ -53,3 +53,10 @@ noArg {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+
+tasks.withType<Jar>().configureEach {
+			isPreserveFileTimestamps = false
+			isReproducibleFileOrder = true
+		}
+
