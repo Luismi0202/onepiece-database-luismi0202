@@ -55,8 +55,10 @@ tasks.withType<Test> {
 }
 
 
+// `build.gradle.kts` (ya tienes el bloque Jar; sin cambios críticos)
+// Añade si quieres tareas reproducibles adicionales:
 tasks.withType<Jar>().configureEach {
-			isPreserveFileTimestamps = false
-			isReproducibleFileOrder = true
-		}
+	isPreserveFileTimestamps = false
+	isReproducibleFileOrder = true
+}
 
