@@ -3,13 +3,11 @@ WORKDIR /app
 COPY gradlew .
 COPY gradle gradle
 RUN chmod +x gradlew
-COPY build.gradle* settings.gradle* gradle.properties ./
-RUN ./gradlew --version
+COPY build.gradle.kts settings.gradle.kts gradle.properties ./
+RUN chmod +x ./gradlew && ./gradlew --version
 COPY src src
-ENV GRADLE_OPTS="-Dorg.gradle.jvmargs=-Xmx512m -Dfile.encoding=UTF-8 -Dorg.gradle.workers.max=1"
-RUN --mount=type=cache,target=/root/.gradle/caches \
-    --mount=type=cache,target=/root/.gradle/wrapper \
-    ./gradlew bootJar --no-daemon --configuration-cache-problems=warn --warning-mode all
+ENV GRADLE_OPTS="-Dorg.gradle.jvmargs=-Xmx512m -Dfile.encoding=UTF-8"
+RUN ./gradlew clean bootJar --no-daemon --stacktrace
 
 FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
