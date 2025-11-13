@@ -5,8 +5,8 @@ COPY gradle gradle
 RUN chmod +x gradlew
 COPY build.gradle.kts settings.gradle.kts gradle.properties ./
 COPY src src
-ENV GRADLE_OPTS="-Xmx1024m -Dfile.encoding=UTF-8"
-RUN ./gradlew clean bootJar --no-daemon --info
+ENV GRADLE_OPTS="-Xmx2048m -Dfile.encoding=UTF-8"
+RUN ./gradlew clean bootJar --no-daemon --info --stacktrace
 
 FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
