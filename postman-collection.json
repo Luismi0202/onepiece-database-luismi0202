@@ -1,0 +1,184 @@
+{
+  "info": {
+    "name": "Backend Luismi - One Piece API",
+    "_postman_id": "backend-luismi-collection",
+    "description": "Colección de Postman para probar el API de One Piece",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Personajes",
+      "item": [
+        {
+          "name": "GET All Personajes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/personajes",
+              "host": ["{{base_url}}"],
+              "path": ["personajes"]
+            }
+          }
+        },
+        {
+          "name": "GET Personaje by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/personajes/1",
+              "host": ["{{base_url}}"],
+              "path": ["personajes", "1"]
+            }
+          }
+        },
+        {
+          "name": "POST Create Personaje",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Monkey D. Luffy\",\n  \"tripulacion\": \"Piratas del Sombrero de Paja\",\n  \"habilidades\": []\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/personajes",
+              "host": ["{{base_url}}"],
+              "path": ["personajes"]
+            }
+          }
+        },
+        {
+          "name": "PUT Update Personaje",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Monkey D. Luffy\",\n  \"tripulacion\": \"Piratas del Sombrero de Paja - Emperador del Mar\",\n  \"habilidades\": []\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/personajes/1",
+              "host": ["{{base_url}}"],
+              "path": ["personajes", "1"]
+            }
+          }
+        },
+        {
+          "name": "DELETE Personaje",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/personajes/1",
+              "host": ["{{base_url}}"],
+              "path": ["personajes", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Habilidades",
+      "item": [
+        {
+          "name": "GET All Habilidades",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/habilidades",
+              "host": ["{{base_url}}"],
+              "path": ["habilidades"]
+            }
+          }
+        },
+        {
+          "name": "GET Habilidad by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/habilidades/1",
+              "host": ["{{base_url}}"],
+              "path": ["habilidades", "1"]
+            }
+          }
+        },
+        {
+          "name": "POST Create Habilidad",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Gomu Gomu no Mi\",\n  \"descripcion\": \"Fruta del diablo que convierte el cuerpo en goma\",\n  \"personajeId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/habilidades",
+              "host": ["{{base_url}}"],
+              "path": ["habilidades"]
+            }
+          }
+        },
+        {
+          "name": "PUT Update Habilidad",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Gomu Gomu no Mi (Hito Hito no Mi Modelo: Nika)\",\n  \"descripcion\": \"Fruta del diablo legendaria que otorga poderes de goma y libertad absoluta\",\n  \"personajeId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/habilidades/1",
+              "host": ["{{base_url}}"],
+              "path": ["habilidades", "1"]
+            }
+          }
+        },
+        {
+          "name": "DELETE Habilidad",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/habilidades/1",
+              "host": ["{{base_url}}"],
+              "path": ["habilidades", "1"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}
+
