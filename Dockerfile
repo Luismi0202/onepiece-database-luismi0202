@@ -2,29 +2,33 @@
 FROM eclipse-temurin:17-jdk-jammy AS build
 WORKDIR /app
 
-# Copiar solo lo necesario primero para aprovechar caché
+# Wrapper y caché de dependencias
 COPY gradlew .
 COPY gradle gradle
 RUN chmod +x gradlew
 
+# Archivos de build
 COPY build.gradle* settings.gradle* ./
-# (Si usas libs.versions.toml u otros archivos de config, añádelos aquí)
-
-# Comprobar wrapper y versión
 RUN ./gradlew --version
 
-# Copiar código fuente
+# Código fuente
 COPY src src
 
-# Opcional: variables de memoria (ajusta si falla por heap)
-ENV GRADLE_OPTS="-Dorg.gradle.jvmargs=-Xmx512m -XX:MaxMetaspaceSize=256m"
+# Memoria y paralelismo bajos para Render
+ENV GRADLE_OPTS="-Dorg.gradle.jvmargs=-Xmx512m -Dfile.encoding=UTF-8 -Dorg.gradle.workers.max=1"
 
-# Build con más detalle
-RUN ./gradlew clean build -x test --no-daemon --stacktrace --debug
+# Compila solo el jar ejecutable de Spring Boot con logs claros
+RUN ./gradlew clean bootJar --no-daemon --stacktrace --info
 
 # Etapa de ejecución
 FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
-COPY --from=build /app/build/libs/*-SNAPSHOT.jar app.jar
+
+# Copia el jar generado (cualquier versión)
+COPY --from=build /app/build/libs/*.jar app.jar
+
+# Puerto y perfil
 EXPOSE 8080
+ENV SPRING_PROFILES_ACTIVE=prod
+
 ENTRYPOINT ["java","-jar","app.jar"]
