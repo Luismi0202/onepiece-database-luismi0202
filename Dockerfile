@@ -9,7 +9,8 @@ COPY src src
 ENV GRADLE_OPTS="-Dorg.gradle.jvmargs=-Xmx512m -Dfile.encoding=UTF-8 -Dorg.gradle.workers.max=1"
 RUN --mount=type=cache,target=/root/.gradle/caches \
     --mount=type=cache,target=/root/.gradle/wrapper \
-    ./gradlew bootJar --no-daemon --warning-mode all
+    ./gradlew bootJar --no-daemon --configuration-cache-problems=warn --warning-mode all
+
 FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
 COPY --from=build /app/build/libs/*.jar app.jar
