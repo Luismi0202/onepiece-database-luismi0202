@@ -1,16 +1,16 @@
 # Etapa de construcción
-FROM gradle:8.5-jdk17-alpine AS build
-WORKDIR /home/gradle/src
-COPY --chown=gradle:gradle . .
-# Modifica esta línea para saltar los tests
-RUN gradle build --no-daemon -x test
+FROM eclipse-temurin:17-jdk-jammy AS build
+WORKDIR /app
+COPY . .
+# Garantiza permisos del wrapper
+RUN chmod +x gradlew
+# Construcción sin tests, con más detalle de logs
+RUN ./gradlew clean build -x test --no-daemon --stacktrace --info
 
 # Etapa de ejecución
 FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
-# Copia el JAR construido desde la etapa anterior
-COPY --from=build /home/gradle/src/build/libs/*.jar app.jar
-# Expone el puerto en el que corre Spring Boot (por defecto 8080)
+# Copia sólo el JAR final (ajusta el nombre si cambia)
+COPY --from=build /app/build/libs/*-SNAPSHOT.jar app.jar
 EXPOSE 8080
-# Comando para ejecutar la aplicación
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
