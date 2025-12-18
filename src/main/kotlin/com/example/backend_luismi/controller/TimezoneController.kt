@@ -1,12 +1,12 @@
 package com.example.backend_luismi.controller
 
-import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 data class TimezoneConversionRequest(
     val time: String,
@@ -55,7 +55,9 @@ class TimezoneController {
                     timeDifference = "Spain is ${calculateTimeDifference(ukZonedTime, spainZonedTime)} hour(s) ahead of UK"
                 )
             )
-        } catch (e: Exception) {
+        } catch (e: DateTimeParseException) {
+            return ResponseEntity.badRequest().build()
+        } catch (e: NumberFormatException) {
             return ResponseEntity.badRequest().build()
         }
     }
@@ -68,12 +70,16 @@ class TimezoneController {
     private fun parseTime(time: String): java.time.LocalTime {
         return try {
             java.time.LocalTime.parse(time)
-        } catch (e: Exception) {
+        } catch (e: DateTimeParseException) {
             // Try parsing HH:mm format
-            val parts = time.split(":")
-            if (parts.size >= 2) {
-                java.time.LocalTime.of(parts[0].toInt(), parts[1].toInt())
-            } else {
+            try {
+                val parts = time.split(":")
+                if (parts.size >= 2) {
+                    java.time.LocalTime.of(parts[0].toInt(), parts[1].toInt())
+                } else {
+                    java.time.LocalTime.MIDNIGHT
+                }
+            } catch (e: NumberFormatException) {
                 java.time.LocalTime.MIDNIGHT
             }
         }
